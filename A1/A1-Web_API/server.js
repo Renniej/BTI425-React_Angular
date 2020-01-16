@@ -62,5 +62,39 @@ app.get('/api/cars/:id', function (req, res) { //get single car documents
 
 })
 
+app.put("/api/cars/:id", (req, res) => {
+
+    data_services.Update_Car(req.body)
+        .then(function (data) {
+            res.json(data);
+        })
+        .catch(function () {
+            res.status(404)
+            res.json({ "message": "Resource not found" });
+        })
+});
+
+
+app.delete("/api/cars/:id", (req, res) => {
+
+    data_services.carDelete(req.params.id)
+        .then(function () {
+            res.status(204).end();
+        })
+        .catch(function () {
+            res.status(404)
+            res.json({ "message": "Resource not found" });
+        })
+});
+
+
+app.use((req, res) => {
+    res.status(404)
+    res.send("Resource not found");
+});
+
+
+
+
 app.listen(HTTP_PORT, onHttpStart);
 
