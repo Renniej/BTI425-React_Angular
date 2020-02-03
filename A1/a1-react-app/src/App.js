@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { Route, Switch, Link } from "react-router-dom";
-import './App.css';
-import UserList from './UserList';
-import UserDetail from './UserDetail';
-import UserEdit from './UserEdit';
-import UserDelete from './UserDelete';
-import UserCreate from './UserCreate';
+import "./App.css";
+import CarList from "./getCars";
+import CarDetails from "./GetOneCars";
+import UserEdit from "./editCar";
+import CarDelete from "./DeleteCar";
+import CreateCar from "./CreateCar";
 
 class App extends Component {
   render() {
@@ -16,13 +16,25 @@ class App extends Component {
         <hr />
 
         <Switch>
-          <Route exact path='/' render={() => (<Home />)} />
-          <Route exact path='/users' render={() => (<UserList />)} />
-          <Route exact path='/users/create' render={() => (<UserCreate />)} />
-          <Route exact path='/users/detail/:id' render={(props) => (<UserDetail id={props.match.params.id} />)} />
-          <Route exact path='/users/edit/:id' render={(props) => (<UserEdit id={props.match.params.id} />)} />
-          <Route exact path='/users/delete/:id' render={(props) => (<UserDelete id={props.match.params.id} />)} />
-          <Route render={() => (<NotFound />)} />
+          <Route exact path="/" render={() => <Home />} />
+          <Route exact path="/cars" render={() => <CarList />} />
+          <Route exact path="/cars/create" render={() => <CreateCar />} />
+          <Route
+            exact
+            path="/cars/detail/:id"
+            render={props => <CarDetails id={props.match.params.id} />}
+          />
+          <Route
+            exact
+            path="/cars/edit/:id"
+            render={props => <UserEdit id={props.match.params.id} />}
+          />
+          <Route
+            exact
+            path="/cars/delete/:id"
+            render={props => <CarDelete id={props.match.params.id} />}
+          />
+          <Route render={() => <NotFound />} />
         </Switch>
 
         <p>&nbsp;</p>
@@ -47,34 +59,35 @@ const Header = () => {
       </div>
     </div>
   );
-}
+};
 
-// Function component for the navigation bar 
+// Function component for the navigation bar
 const Navbar = () => {
   return (
     <div className="container-fluid navbar-outline">
       <div className="navbar-header">
-        <Link to='/' className='navbar-brand'>Home page</Link>
+        <Link to="/" className="navbar-brand">
+          Home page
+        </Link>
       </div>
 
       {/* <!-- All the navigation links are in the following div --> */}
       <div>
         <ul className="nav navbar-nav">
           <li>
-            <Link to='/users'>User list</Link>
+            <Link to="/cars">Find a car</Link>
           </li>
           <li>
-            <Link to='/users/create'>Add a user</Link>
+            <Link to="/cars/create">Add a user</Link>
           </li>
           <li>
-            <Link to='/othercontent'>Other content</Link>
+            <Link to="/othercontent">Other content</Link>
           </li>
         </ul>
       </div>
     </div>
-
   );
-}
+};
 
 // Function component for a content area
 const Home = () => {
@@ -85,7 +98,7 @@ const Home = () => {
       <p>&nbsp;</p>
     </div>
   );
-}
+};
 
 // Function component for a content area
 const NotFound = () => {
@@ -95,5 +108,4 @@ const NotFound = () => {
       <p>&nbsp;</p>
     </div>
   );
-}
-
+};

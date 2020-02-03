@@ -50,6 +50,7 @@ exports.Find = function(id) {
       console.log(id);
       Car.findById(id, function(err, data) {
         if (err) reject(err);
+        if (data == null) reject("Car not found")
         else resolve(data);
       });
     } else {
@@ -89,6 +90,8 @@ exports.Remove_Car = function(id) {
   return new Promise(function(resolve, reject) {
     Car.findByIdAndDelete(id, function(err) {
       if (err) reject(err);
+
+    
       else resolve();
     });
   });

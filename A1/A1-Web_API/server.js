@@ -54,6 +54,7 @@ app.post("/api/cars", function(req, res) {
       res.json(data);
     })
     .catch(function(err) {
+      res.status(500);
       res.send("Error: " + err);
     });
 });
@@ -67,7 +68,7 @@ app.get("/api/cars/:id", function(req, res) {
       res.json(data);
     })
     .catch(function(err) {
-      res.send("ERROR : " + err);
+      res.status(404).send("ERROR : " + err);
     });
 });
 
@@ -85,9 +86,9 @@ app.put("/api/cars/:id", (req, res) => {
 
 app.delete("/api/cars/:id", (req, res) => {
   data_services
-    .carDelete(req.params.id)
+    .Remove_Car(req.params.id)
     .then(function() {
-      res.status(204).end();
+      res.send("req.params.id Deleted");
     })
     .catch(function() {
       res.status(404);
