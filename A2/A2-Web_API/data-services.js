@@ -50,7 +50,63 @@ exports.initializeDBConnection = function() {
   });
 };
 
+exports.findDefinitionById = function(id) {
+  console.log("findDefinitionByID CALLED");
 
+  return new Promise(function(resolve, reject) {
+    if (id) {
+      //if a condition is sent then find all documents with that condition
+
+      console.log(id);
+      definiton.findById(id, function(err, data) {
+        if (err) reject(err);
+        if (data == null) reject("defintion not found")
+        else resolve(data);
+      });
+    } else {
+      //else grab all documents
+      console.log("LOOKING");
+      definiton.find({}, function(err, data) {
+        if (err) reject(err);
+        else resolve(data);
+      });
+    }
+  });
+};
+
+
+exports.addDefinition = function(newDefinition) {
+  return new Promise(function(resolve, reject) {
+    definiton.create(newDefinition, function(err, data) {
+      if (err) reject(err);
+      else resolve(data);
+    });
+  });
+};
+
+exports.updateDefinition = function(newDefinition) {
+  console.log("updateDefinition called")
+  console.log(newDefinition);
+  return new Promise(function(resolve, reject) {
+    definition.findByIdAndUpdate(newDefinition._id, newDefinition, { new: true }, function(
+      err,
+      data
+    ) {
+      if (err) reject(err);
+      else resolve(data);
+    });
+  });
+};
+
+
+exports.removeDefinition = function(id) {
+  return new Promise(function(resolve, reject) {
+    definiton.findByIdAndDelete(id, function(err) {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+};
 
 exports.findEnglishTermsById = function(id) {
   console.log("findAllEnglishTerms CALLED");
@@ -75,6 +131,10 @@ exports.findEnglishTermsById = function(id) {
     }
   });
 };
+
+
+
+
 
 exports.findEnglishTermsByWord = function(word) {
 
@@ -104,6 +164,7 @@ exports.addEnglishTerm = function(newTerm) {
 };
 
 exports.updateEnglishTerm = function(newTerm) {
+  console.log("update English Term called")
   console.log(newTerm);
   return new Promise(function(resolve, reject) {
     termEnglish.findByIdAndUpdate(newTerm._id, newTerm, { new: true }, function(
@@ -129,32 +190,6 @@ exports.removeEnglishTerm = function(id) {
 };
 
 
-exports.modifyHelpEnglish = function(id, crement, type){
-
-
-  return new Promise(function(resolve, reject){
-
-    if (crement === true){
-
-        this.incrementHelpEnglish(id,type).then(function(data){
-          resolve();
-        }).catch(function(err){
-          reject(err);
-        })
-
-    }else if (crement === false){
-      this.decrementHelpEnglish(id, type).then(function(data){
-        resolve();
-      }).catch(function(err){
-        reject(err);
-      })
-    }
-
-
-  })
-
-
-}
 
 
 
@@ -163,7 +198,7 @@ exports.incrementHelpEnglish = function(id, type){
 
   return new Promise(function(resolve,Reject){
 
-    this.findEnglishTermsById(id).then(function(term){
+    exports.findEnglishTermsById(id).then(function(term){
 
       if (type === true){
           term.helpYes++;
@@ -172,7 +207,7 @@ exports.incrementHelpEnglish = function(id, type){
         term.helpNo++;
       }
 
-      this.updateEnglishTerm(term).then(function(data){
+      exports.updateEnglishTerm(term).then(function(data){
 
         resolve(data);
 
@@ -198,7 +233,7 @@ exports.decrementHelpEnglish = function(id, type){
 
   return new Promise(function(resolve,Reject){
 
-    this.findEnglishTermsById(id).then(function(term){
+    exports.findEnglishTermsById(id).then(function(term){
 
       if (type === true){
           term.helpYes--;
@@ -207,7 +242,8 @@ exports.decrementHelpEnglish = function(id, type){
         term.helpNo--;
       }
 
-      this.updateEnglishTerm(term).then(function(data){
+
+      exports.updateEnglishTerm(term).then(function(data){
 
         resolve(data);
 
@@ -225,6 +261,34 @@ exports.decrementHelpEnglish = function(id, type){
    
 
 }
+
+exports.modifyHelpEnglish = function(id, crement, type){
+
+
+  return new Promise(function(resolve, reject){
+
+    if (crement === true){
+
+        exports.incrementHelpEnglish(id,type).then(function(data){
+          resolve();
+        }).catch(function(err){
+          reject(err);
+        })
+
+    }else if (crement === false){
+      exports.decrementHelpEnglish(id, type).then(function(data){
+        resolve();
+      }).catch(function(err){
+        reject(err);
+      })
+    }
+
+
+  })  
+
+
+}
+
 
 
 /*
