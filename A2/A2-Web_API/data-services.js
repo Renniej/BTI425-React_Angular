@@ -75,12 +75,43 @@ exports.findDefinitionById = function(id) {
 };
 
 
-exports.addDefinition = function(newDefinition) {
+exports.addEngDefinition = function(newDefinition, termID) {
   return new Promise(function(resolve, reject) {
-    definiton.create(newDefinition, function(err, data) {
-      if (err) reject(err);
-      else resolve(data);
-    });
+
+
+    exports.findEnglishTermsById(termID).then(function(term){
+
+        if (term === null){
+          reject("English term with that ID does not exist, thus defintiion creation was canceled");
+        }
+        else{
+          definiton.create(newDefinition, function(err, defin) {
+            if (err) reject(err);
+            else {
+
+              //console.log(" UPDATING TERM IN DEFINITION CREATION : " + term);
+              term.definitions.push(defin._id);
+
+              exports.updateEnglishTerm(term).then(function(data){
+                resolve(data);
+              }).catch(function(err){
+                reject(err);
+              })
+
+
+            }
+          });
+        }
+
+      }).catch(function(err){
+        reject(err);
+      })
+
+    
+
+
+
+
   });
 };
 
@@ -152,6 +183,58 @@ exports.findEnglishTermsByWord = function(word) {
 
     })
 
+}
+
+exports.addDefinitionToEnglishTerm = function(definitonID,termID){
+
+    return new Promise(function(resolve,reject){
+
+
+      if (definitonID != null && termID != null){
+
+      findEnglishTermsById(termID).then(function(term){
+
+          if (term === null){
+            reject("English term does not exist")
+          }
+          else{
+
+              findDefinitionById(definitonID).then(function(defin){
+
+
+                if (defin === null){
+                  reject("Term with ID " +  definitonID + "does not exist")
+                }
+                else{
+
+                  term.definitions.push(defin._id);
+                  updateEnglishTerm(term).then(function(data){
+
+                    resolve(data);
+
+
+                  }).catch(function(err){
+                    reject(err);
+                  })
+
+                }
+
+              }).catch(function(err){
+                reject(err);
+              })
+
+          }
+
+     }).catch(function(err){
+       reject(err);
+     })
+
+
+    }
+    else reject("A null parameter was sent for term or definition ID");
+
+    });
+  
 }
 
 exports.addEnglishTerm = function(newTerm) {

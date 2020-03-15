@@ -64,12 +64,13 @@ app.get("/api/definition/:id", function(req, res) {
     });
 });
 
-app.post("/api/definition", function(req, res) {
+
+app.post("/api/eng_definition/:id", function(req, res) {
 
 
   console.log(req.body)
   data_services
-    .addDefinition(req.body)
+    .addEngDefinition(req.body,req.params.id)
     .then(function(data) {
       res.status(200);
       res.json(data);
@@ -184,6 +185,9 @@ app.put("/api/termEnglish/:id", (req, res) => {
       res.json({ message: "Resource not found" });
     });
 });
+
+
+
 
 app.delete("/api/termEnglish/:id", (req, res) => {
   data_services
