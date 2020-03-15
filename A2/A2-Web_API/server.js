@@ -160,6 +160,19 @@ app.get("/api/termEnglish/:id", function(req, res) {
     });
 });
 
+app.get("/api/populated_termEnglish/:id", function(req, res) {
+  //get single car documents
+
+  data_services
+    .findPopulatedEnglishTermsById(req.params.id)
+    .then(function(data) {
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.status(404).send("ERROR : " + err);
+    });
+});
+
 
 app.get("/api/termEnglish/findWord/:word", function(req, res) {
   //get single car documents

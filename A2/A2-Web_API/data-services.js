@@ -74,7 +74,6 @@ exports.findDefinitionById = function(id) {
   });
 };
 
-
 exports.addEngDefinition = function(newDefinition, termID) {
   return new Promise(function(resolve, reject) {
 
@@ -106,14 +105,46 @@ exports.addEngDefinition = function(newDefinition, termID) {
       }).catch(function(err){
         reject(err);
       })
-
-    
-
-
-
-
   });
 };
+
+exports.addNonEngDefinition = function(newDefinition, termID) {
+  return new Promise(function(resolve, reject) {
+
+
+    exports.findNonEnglishTermsById(termID).then(function(term){
+
+        if (term === null){
+          reject("English term with that ID does not exist, thus defintiion creation was canceled");
+        }
+        else{
+          definiton.create(newDefinition, function(err, defin) {
+            if (err) reject(err);
+            else {
+
+              //console.log(" UPDATING TERM IN DEFINITION CREATION : " + term);
+              term.definitions.push(defin._id);
+
+              exports.updateNonEnglishTerm(term).then(function(data){
+                resolve(data);
+              }).catch(function(err){
+                reject(err);
+              })
+
+
+            }
+          });
+        }
+
+      }).catch(function(err){
+        reject(err);
+      })
+  });
+};
+
+
+
+
 
 exports.updateDefinition = function(newDefinition) {
   console.log("updateDefinition called")
@@ -136,6 +167,269 @@ exports.removeDefinition = function(id) {
       if (err) reject(err);
       else resolve();
     });
+  });
+};
+
+//------- non english term functions
+
+exports.findNonEnglishTermsById = function(id) {
+  console.log("findAllEnglishTerms CALLED");
+
+  return new Promise(function(resolve, reject) {
+    if (id) {
+      //if a condition is sent then find all documents with that condition
+
+      console.log(id);
+      termOther.findById(id, function(err, data) {
+        if (err) reject(err);
+        if (data == null) reject("Car not found")
+        else resolve(data);
+      });
+    } else {
+      //else grab all documents
+      console.log("LOOKING");
+      termOther.find({}, function(err, data) {
+        if (err) reject(err);
+        else resolve(data);
+      });
+    }
+  });
+};
+
+exports.findPopulatedNonEnglishTermsById = function(id) {
+  console.log("findAllEnglishTerms CALLED");
+
+  return new Promise(function(resolve, reject) {
+    if (id) {
+      //if a condition is sent then find all documents with that condition
+
+      console.log(id);
+      termOther.findById(id).populate('definitions').exec(function(err, data) {
+        if (err) reject(err);
+        if (data == null) reject("Car not found")
+        else resolve(data);
+      });
+        
+        
+        
+        
+        
+    } else {
+      //else grab all documents
+      console.log("LOOKING");
+      termEnglish.find({}, function(err, data) {
+        if (err) reject(err);
+        else resolve(data);
+      });
+    }
+  });
+};
+
+
+exports.findNonEnglishTermsByWord = function(word) {
+
+  console.log()
+    return new Promise(function(resolve, reject){
+
+      if (word){
+        termOther.findOne({wordEnglish : word}, function(err, data){
+
+          if (err) reject(err)
+          else resolve(data)
+
+        })
+      }
+
+    })
+
+}
+
+
+exports.addNonEnglishTerm = function(newTerm) {
+  return new Promise(function(resolve, reject) {
+    termOther.create(newTerm, function(err, data) {
+      if (err) reject(err);
+      else resolve(data);
+    });
+  });
+};
+
+
+exports.addDefinitionToNonEnglishTerm = function(definitonID,termID){
+
+  return new Promise(function(resolve,reject){
+
+
+    if (definitonID != null && termID != null){
+
+    exports.findNonEnglishTermsById(termID).then(function(term){
+
+        if (term === null){
+          reject("English term does not exist")
+        }
+        else{
+
+            exports.findDefinitionById(definitonID).then(function(defin){
+
+
+              if (defin === null){
+                reject("Term with ID " +  definitonID + "does not exist")
+              }
+              else{
+
+                term.definitions.push(defin._id);
+                exports.updateNonEnglishTerm(term).then(function(data){
+
+                  resolve(data);
+
+
+                }).catch(function(err){
+                  reject(err);
+                })
+
+              }
+
+            }).catch(function(err){
+              reject(err);
+            })
+
+        }
+
+   }).catch(function(err){
+     reject(err);
+   })
+
+
+  }
+  else reject("A null parameter was sent for term or definition ID");
+
+  });
+
+}
+
+
+exports.updateNonEnglishTerm = function(newTerm) {
+  console.log("update English Term called")
+  console.log(newTerm);
+  return new Promise(function(resolve, reject) {
+    termOther.findByIdAndUpdate(newTerm._id, newTerm, { new: true }, function(
+      err,
+      data
+    ) {
+      if (err) reject(err);
+      else resolve(data);
+    });
+  });
+};
+
+
+exports.removeNonEnglishTerm = function(id) {
+  return new Promise(function(resolve, reject) {
+    termOther.findByIdAndDelete(id, function(err) {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+};
+
+
+
+
+exports.incrementHelpEnglish = function(id, type){
+
+
+  return new Promise(function(resolve,Reject){
+
+    exports.findEnglishTermsById(id).then(function(term){
+
+      if (type === true){
+          term.helpYes++;
+      }
+      else{
+        term.helpNo++;
+      }
+
+      exports.updateEnglishTerm(term).then(function(data){
+
+        resolve(data);
+
+      }).catch(function(err){
+        reject(err);
+      })
+
+
+    }).catch(function(err){
+      reject(err);
+    })
+
+
+  })
+   
+
+}
+
+
+
+exports.decrementHelpEnglish = function(id, type){
+
+
+  return new Promise(function(resolve,Reject){
+
+    exports.findEnglishTermsById(id).then(function(term){
+
+      if (type === true){
+          term.helpYes--;
+      }
+      else{
+        term.helpNo--;
+      }
+
+
+      exports.updateEnglishTerm(term).then(function(data){
+
+        resolve(data);
+
+      }).catch(function(err){
+        reject(err);
+      })
+
+
+    }).catch(function(err){
+      reject(err);
+    })
+
+
+  })
+}
+
+//------------------------------------------------------
+
+exports.findPopulatedEnglishTermsById = function(id) {
+  console.log("findAllEnglishTerms CALLED");
+
+  return new Promise(function(resolve, reject) {
+    if (id) {
+      //if a condition is sent then find all documents with that condition
+
+      console.log(id);
+      termEnglish.findById(id).populate('definitions').exec(function(err, data) {
+        if (err) reject(err);
+        if (data == null) reject("Car not found")
+        else resolve(data);
+      });
+        
+        
+        
+        
+        
+    } else {
+      //else grab all documents
+      console.log("LOOKING");
+      termEnglish.find({}, function(err, data) {
+        if (err) reject(err);
+        else resolve(data);
+      });
+    }
   });
 };
 
@@ -162,9 +456,6 @@ exports.findEnglishTermsById = function(id) {
     }
   });
 };
-
-
-
 
 
 exports.findEnglishTermsByWord = function(word) {
@@ -276,12 +567,12 @@ exports.removeEnglishTerm = function(id) {
 
 
 
-exports.incrementHelpEnglish = function(id, type){
+exports.incrementHelpNonEnglish = function(id, type){
 
 
   return new Promise(function(resolve,Reject){
 
-    exports.findEnglishTermsById(id).then(function(term){
+    exports.findNonEnglishTermsById(id).then(function(term){
 
       if (type === true){
           term.helpYes++;
@@ -290,7 +581,7 @@ exports.incrementHelpEnglish = function(id, type){
         term.helpNo++;
       }
 
-      exports.updateEnglishTerm(term).then(function(data){
+      exports.updateNonEnglishTerm(term).then(function(data){
 
         resolve(data);
 
@@ -311,12 +602,12 @@ exports.incrementHelpEnglish = function(id, type){
 
 
 
-exports.decrementHelpEnglish = function(id, type){
+exports.decrementHelpNonEnglish = function(id, type){
 
 
   return new Promise(function(resolve,Reject){
 
-    exports.findEnglishTermsById(id).then(function(term){
+    exports.findNonEnglishTermsById(id).then(function(term){
 
       if (type === true){
           term.helpYes--;
@@ -326,7 +617,7 @@ exports.decrementHelpEnglish = function(id, type){
       }
 
 
-      exports.updateEnglishTerm(term).then(function(data){
+      exports.updateNonEnglishTerm(term).then(function(data){
 
         resolve(data);
 
@@ -345,21 +636,21 @@ exports.decrementHelpEnglish = function(id, type){
 
 }
 
-exports.modifyHelpEnglish = function(id, crement, type){
+exports.modifyHelpNonEnglish = function(id, crement, type){
 
 
   return new Promise(function(resolve, reject){
 
     if (crement === true){
 
-        exports.incrementHelpEnglish(id,type).then(function(data){
+        exports.incrementHelpNonEnglish(id,type).then(function(data){
           resolve();
         }).catch(function(err){
           reject(err);
         })
 
     }else if (crement === false){
-      exports.decrementHelpEnglish(id, type).then(function(data){
+      exports.decrementHelpNonEnglish(id, type).then(function(data){
         resolve();
       }).catch(function(err){
         reject(err);
