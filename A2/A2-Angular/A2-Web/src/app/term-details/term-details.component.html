@@ -1,1 +1,18 @@
-<p>term-details works!</p>
+
+
+
+<h1>{{m_term.wordEnglish}}</h1>
+<p>{{m_term.wordExpanded}}</p>
+
+<div class="grid grid-pad">
+ 
+   
+    <a *ngFor="let d of m_definitions" class="col-1-4">
+      <div class="module">
+        
+
+        <h4>{{d.definition}}</h4>
+      </div>
+    </a>
+  </div>
+

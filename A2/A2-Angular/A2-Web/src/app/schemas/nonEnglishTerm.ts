@@ -1,9 +1,8 @@
-import { definition } from './definition';
 
 
 
 
-export interface englishTerm{
+export interface nonEnglishTerm{
 
 wordExpanded: string,
 image: string,
@@ -15,9 +14,10 @@ linkYoutube: string,
 fieldOfStudy: string,
 helpYes: number,
 helpNo: number,
-definitions: definition[],
+definitions: string[],
 
 _id: string,
+termEnglish : string,
 wordEnglish: string,
 languageCode: string,
 authorName: string,

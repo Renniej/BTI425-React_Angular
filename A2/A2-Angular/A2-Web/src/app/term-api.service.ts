@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
+import {englishTerm} from './schemas/englishTerm';
+import {nonEnglishTerm} from './schemas/nonEnglishTerm'
 
-import {englishTerm} from './schemas/englishTerm'
 @Injectable({
   providedIn: 'root'
 })
@@ -22,11 +23,20 @@ export class TermApiService {
   }
 
 
-  getEnglishTerm(id : String) : Observable<englishTerm[]>{
+  getEnglishTerm(id : String) : Observable<englishTerm>{
 
-    //TODO : code error catcher s
-      return this.http.get<englishTerm[]>(this.apiUrl+"termEnglish");
+   
+      return this.http.get<englishTerm>(this.apiUrl+"termEnglish/" + id);
+  }
+  getPopulatedEnglishTerm(id : String) : Observable<englishTerm>{
+     //TODO : code error catcher s
+    return this.http.get<englishTerm>(this.apiUrl+"populated_termEnglish/" + id);
   }
 
+  getNonEnglishTerm(id : String) : Observable<nonEnglishTerm>{
+
+    //TODO : code error catcher s
+      return this.http.get<nonEnglishTerm>(this.apiUrl+"termNonEnglish/" + id);
+  }
 
 }
