@@ -9,10 +9,26 @@
    
     <a *ngFor="let d of m_definitions" class="col-1-4">
       <div class="module">
-        
+        <small>{{d.definition}}</small>
 
-        <h4>{{d.definition}}</h4>
+        <td class="text-center">
+          <button class="btn btn-primary">
+            Details
+          </button>
+          
+          &nbsp;&nbsp;
+          <button class="btn btn-warning">
+            Edit
+          </button>
+          &nbsp;&nbsp;
+          <button class="btn btn-danger">
+            Delete
+          </button>
+        </td>
       </div>
+      
     </a>
+   
+
   </div>
 

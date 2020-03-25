@@ -1,10 +1,13 @@
 
 
 <ul class="terms">
-    <li *ngFor="let term of m_englishTerms; let i = index" (click)="redirectToDetails(term._id);" >
+    <li *ngFor="let term of m_englishTerms; let i = index"  >
         
-        <span class ="badge">{{i+1}} </span>
-        <span>{{term.wordEnglish}}</span>
+        
+        <a routerLink="/details/termEnglish/{{term._id}}" >
+            <span class ="badge">{{i+1}} </span>
+                {{term.wordEnglish}}
+        </a>
         <button class="delete" title="delete term">x</button>
        
     
