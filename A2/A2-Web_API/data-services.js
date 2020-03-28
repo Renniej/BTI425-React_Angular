@@ -333,7 +333,34 @@ exports.removeNonEnglishTerm = function(id) {
 };
 
 
+exports.modifyHelpEnglish = function(id, crement, type){
 
+
+  return new Promise(function(resolve, reject){
+
+    if (crement === true){
+
+        exports.incrementHelpEnglish(id,type).then(function(data){
+          console.log( id + ": has been incremented");
+          resolve();
+        }).catch(function(err){
+          reject(err);
+        })
+
+    }else if (crement === false){
+      exports.decrementHelpEnglish(id, type).then(function(data){
+        console.log( id + ": has been decremented");
+        resolve();
+      }).catch(function(err){
+        reject(err);
+      })
+    }
+
+
+  })  
+
+
+}
 
 exports.incrementHelpEnglish = function(id, type){
 

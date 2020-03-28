@@ -1,34 +1,70 @@
 
 
 
-<h1>{{m_term.wordEnglish}}</h1>
-<p>{{m_term.wordExpanded}}</p>
+<h3>{{m_term.wordEnglish}}</h3>
 
-<div class="grid grid-pad">
+
+
+<div class="text-center">
+  <h4>{{m_term.wordExpanded}}</h4>
+  <p>{{m_term.fieldOfStudy}} </p>
+  
+  <button class="btn btn-success" (click)="onClickHelpful()">Helpful[{{m_term.helpYes}}]</button>
+  <button class="btn btn-danger"(click)="onClickNotHelpful()">Not Helpful[{{m_term.helpNo}}]</button>
+<ul class="list-group">
+  <li class="list-group-item">
+      <a class="btn btn-warning" routerLink="/edit/{{m_termType}}/{{m_term._id}}">Edit</a>
+      <a class="btn btn-danger" routerLink="/termEnglish/edit/dsfds">Delete</a>
+  </li>
+
+
+  <li class="list-group-item">Author : {{m_term.authorName}}</li>
+  <li class="list-group-item">Language Code : {{m_term.languageCode}}</li>
+  <li class="list-group-item">Date Revised : {{m_term.dateRevised}}</li>
+  <li class="list-group-item">Date Created : {{m_term.dateCreated}}</li>
  
-   
-    <a *ngFor="let d of m_definitions" class="col-1-4">
-      <div class="module">
-        <small>{{d.definition}}</small>
+  <li class="list-group-item"></li>
+  <li class="list-group-item">Wikipedia : <a href="url">{{m_term.linkWikipedia}}</a></li>
+  <li class="list-group-item">Youtube : <a href="url">{{m_term.linkYoutube}}</a></li>
+  <li class="list-group-item">Link Authoritative : <a href="url">{{m_term.linkAuthoritative}}</a></li>
+  <li class="list-group-item">Audio : <a href="url">{{m_term.audio}}</a></li>
+  
+</ul>
+  
 
-        <td class="text-center">
-          <button class="btn btn-primary">
-            Details
-          </button>
-          
-          &nbsp;&nbsp;
-          <button class="btn btn-warning">
-            Edit
-          </button>
-          &nbsp;&nbsp;
-          <button class="btn btn-danger">
-            Delete
-          </button>
-        </td>
-      </div>
-      
-    </a>
-   
+</div>
+<p><a class="btn btn-info" routerLink="/termEnglish/create">Add Definition</a></p>
 
-  </div>
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Author</th>
+      <th>Definition</th>
+      <th>quality</th>
+      <th>likes</th>
+      <th>Date Created</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor='let def of m_definitions; let i = index'>
+      <td>{{ def.authorName }}</td>
+      <td>{{ def.definition }}</td>
+      <td>{{ def.quality }}</td>
+      <td>{{ def.likes }}</td>
+      <td>{{ def.dataCreated }}</td>
+      <td>
+        <a class="btn btn-success">Like![{{def.likes}}]</a>&nbsp;
+        <a routerLink="/users/edit/{{ def.wordEnglish }}" class="btn btn-warning">Edit</a>&nbsp;
+        <a routerLink="/users/delete/{{ def.wordEnglish }}" class="btn btn-danger">Delete</a>&nbsp;
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
 

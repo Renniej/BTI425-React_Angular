@@ -1,0 +1,98 @@
+<form (ngSubmit)="onSubmit()" #termForm="ngForm">
+
+    <div class="form-group">
+      <label for="wordEnglish">wordEnglish</label>
+      <input type="text" class="form-control" id="wordEnglish"
+             required
+             [(ngModel)]="m_term.wordEnglish" name="wordEnglish"
+             #name="ngModel">
+    </div>
+
+
+    <div class="form-group">
+        <label for="image">Image</label>
+        <input type="text" class="form-control" id="image"
+               
+               [(ngModel)]="m_term.image" name="image"
+               #name="ngModel">
+    </div>
+
+    <div class="form-group">
+        <label for="authorName">authorName</label>
+        <input type="text" class="form-control" id="authorName"
+               required
+               [(ngModel)]="m_term.authorName" name="authorName"
+               #name="ngModel">
+    </div>
+
+    <div class="form-group">
+        <label for="fieldOfStudy">Field of Study</label>
+        <input type="text" class="form-control" id="fieldOfStudy"
+               
+               [(ngModel)]="m_term.fieldOfStudy" name="fieldOfStudy"
+               #name="ngModel">
+    </div>
+
+
+    <div class="form-group">
+        <label for="languageCode">Language</label>
+        <select class="form-control" id="languageCode"
+                required
+                [(ngModel)]="m_term.languageCode" name="languageCode"
+                #power="ngModel">
+          <option *ngFor="let lang of m_languageCodes" [value]="lang.languageCode">{{lang.language}}</option>
+        </select>
+      </div>
+
+
+    <div class="form-group">
+        <label for="linkAuthoritative">Authoritative Link</label>
+        <input type="text" class="form-control" id="linkAuthoritative"
+               
+               [(ngModel)]="m_term.linkAuthoritative" name="linkAuthoritative"
+               #name="ngModel">
+    </div>
+
+
+    <div class="form-group">
+        <label for="linkWikipedia">Wikipedia Link</label>
+        <input type="text" class="form-control" id="linkWikipedia"
+               
+               [(ngModel)]="m_term.linkWikipedia" name="linkWikipedia"
+               #name="ngModel">
+    </div>
+
+
+    <div class="form-group">
+        <label for="linkYoutube">Youtube Link</label>
+        <input type="text" class="form-control" id="linkYoutube"
+               
+               [(ngModel)]="m_term.linkYoutube" name="linkYoutube"
+               #name="ngModel">
+    </div>
+
+    <div class="form-group">
+        <label for="helpYes">Helpful Count</label>
+        <input type="text" class="form-control" id="helpYes"
+               
+               [(ngModel)]="m_term.helpYes" name="helpYes"
+               #name="ngModel">
+    </div>
+
+    <div class="form-group">
+        <label for="helpNo">Not Helpful Count</label>
+        <input type="text" class="form-control" id="helpNo"
+               
+               [(ngModel)]="m_term.helpNo" name="helpNo"
+               #name="ngModel">
+    </div>
+ 
+
+    <button type="submit" class="btn btn-success" [disabled]="!termForm.form.valid">Submit</button>
+    
+  
+
+   
+
+ 
+  </form>

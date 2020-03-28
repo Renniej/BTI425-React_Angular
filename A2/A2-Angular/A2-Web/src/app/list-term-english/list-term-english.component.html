@@ -1,17 +1,33 @@
 
 
-<ul class="terms">
-    <li *ngFor="let term of m_englishTerms; let i = index"  >
-        
-        
-        <a routerLink="/details/termEnglish/{{term._id}}" >
-            <span class ="badge">{{i+1}} </span>
-                {{term.wordEnglish}}
-        </a>
-        <button class="delete" title="delete term">x</button>
-       
-    
-    </li>
-</ul>
+
+<h3>List of English Terms</h3>
+<p><a class="btn btn-info" routerLink="/termEnglish/create">Add English Term</a></p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Term</th>
+      <th>Author</th>
+      <th>Number of Definitions</th>
+      <th>Field of Study</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor='let term of m_englishTerms; let i = index'>
+      <td>{{ term.wordEnglish }}</td>
+      <td>{{ term.authorName }}</td>
+      <td>{{ term.definitions.length }}</td>
+      <td>{{ term.fieldOfStudy }}</td>
+      <td>
+        <a routerLink="/details/termEnglish/{{term._id}}" class="btn btn-primary">Detail</a>&nbsp;
+        <a routerLink="/edit/termEnglish/{{term._id}}" class="btn btn-warning">Edit</a>&nbsp;
+        <a routerLink="/users/delete/{{ term.wordEnglish }}" class="btn btn-danger">Delete</a>&nbsp;
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 
 

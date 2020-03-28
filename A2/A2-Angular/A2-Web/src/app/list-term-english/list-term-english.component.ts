@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {TermApiService} from "../term-api.service"
-import {englishTerm} from "../schemas/englishTerm";
+import {term} from "../schemas/englishTerm";
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class ListTermEnglishComponent implements OnInit {
 
-   m_englishTerms : englishTerm[]
+   m_englishTerms : term[]
 
   constructor(private apiService : TermApiService, private router:Router) { }
 
