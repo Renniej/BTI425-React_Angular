@@ -1,1 +1,31 @@
-<p>list-definitions works!</p>
+<p><a class="btn btn-info" routerLink="/create/definition/termEnglish">Add English Definition</a></p>
+<a class="btn btn-info" routerLink="/create/definition/termNonEnglish">Add Non-English Definition</a>
+
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Author</th>
+        <th>Definition</th>
+        <th>quality</th>
+        <th>likes</th>
+        <th>Date Created</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor='let def of m_definitions; let i = index'>
+        <td>{{ def.authorName }}</td>
+        <td>{{ def.definition }}</td>
+        <td>{{ def.quality }}</td>
+        <td>{{ def.likes }}</td>
+        <td>{{ def.dataCreated }}</td>
+        <td>
+          <a class="btn btn-success" (click)="onClickDefinitionLike(def)">Like![{{def.likes}}]</a>&nbsp;
+          <a routerLink="/edit/definition/{{def._id}}" class="btn btn-warning">Edit</a>&nbsp;
+          <a routerLink="/users/delete/{{ def.wordEnglish }}" class="btn btn-danger">Delete</a>&nbsp;
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  

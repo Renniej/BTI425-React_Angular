@@ -1,6 +1,6 @@
 <form (ngSubmit)="onSubmit()" #termForm="ngForm">
 
-    <div class="form-group" *ngIf="m_termType == 'termEnglish' ">
+    <div class="form-group">
       <label for="wordEnglish">wordEnglish</label>
       <input type="text" class="form-control" id="wordEnglish"
              required
@@ -9,15 +9,23 @@
     </div>
 
 
-
-    <div class="form-group" *ngIf="m_termType == 'termNonEnglish' ">
-      <label for="wordNonEnglish">wordNonEnglish</label>
-      <input type="text" class="form-control" id="wordNonEnglish"
-             required
-             [(ngModel)]="m_term.wordNonEnglish" name="wordNonEnglish"
-             #name="ngModel">
+    <div class="form-group">
+        <label for="authorName">authorName</label>
+        <input type="text" class="form-control" id="authorName"
+               required
+               [(ngModel)]="m_term.authorName" name="authorName"
+               #name="ngModel">
     </div>
 
+
+    
+    <div class="form-group">
+        <label for="definition">Definition</label>
+        <input type="text" class="form-control" id="definition"
+               required
+               [(ngModel)]="m_definition.definition" name="definition"
+               #name="ngModel">
+    </div>
 
     <div class="form-group">
         <label for="image">Image</label>
@@ -27,13 +35,6 @@
                #name="ngModel">
     </div>
 
-    <div class="form-group">
-        <label for="authorName">authorName</label>
-        <input type="text" class="form-control" id="authorName"
-               required
-               [(ngModel)]="m_term.authorName" name="authorName"
-               #name="ngModel">
-    </div>
 
     <div class="form-group">
         <label for="fieldOfStudy">Field of Study</label>
@@ -44,16 +45,16 @@
     </div>
 
 
-    <div *ngIf="m_termType == 'termNonEnglish'" class="form-group">
-        <label for="languageCode">Language</label>
-        <select class="form-control" id="languageCode"
-                required
-                [(ngModel)]="m_term.languageCode" name="languageCode"
-                #power="ngModel">
-          <option *ngFor="let lang of m_languageCodes" [value]="lang.languageCode">{{lang.language}}</option>
-        </select>
-      </div>
+    
 
+
+      <div class="form-group">
+        <label for="audio">Audio</label>
+        <input type="text" class="form-control" id="audio"
+               
+               [(ngModel)]="m_term.audio" name="audio"
+               #name="ngModel">
+    </div>
 
     <div class="form-group">
         <label for="linkAuthoritative">Authoritative Link</label>
@@ -81,24 +82,7 @@
                #name="ngModel">
     </div>
 
-    <div class="form-group">
-        <label for="helpYes">Helpful Count</label>
-        <input type="text" class="form-control" id="helpYes"
-               
-               [(ngModel)]="m_term.helpYes" name="helpYes"
-               #name="ngModel">
-    </div>
-
-    <div class="form-group">
-        <label for="helpNo">Not Helpful Count</label>
-        <input type="text" class="form-control" id="helpNo"
-               
-               [(ngModel)]="m_term.helpNo" name="helpNo"
-               #name="ngModel">
-    </div>
-
-
-    
+  
  
 
     <button type="submit" class="btn btn-success" [disabled]="!termForm.form.valid">Submit</button>

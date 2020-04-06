@@ -1,0 +1,51 @@
+<form (ngSubmit)="onSubmit()" #termForm="ngForm">
+
+    
+ 
+      <div class="form-group">
+          <label for="authorName">authorName</label>
+          <input type="text" class="form-control" id="authorName"
+                 required
+                 [(ngModel)]="m_definition.authorName" name="authorName"
+                 #name="ngModel">
+      </div>
+  
+  
+  
+      <div class="form-group">
+        <label for="definition">definition</label>
+        <input type="text" class="form-control" id="definition"
+               required
+               [(ngModel)]="m_definition.definition" name="definition"
+               #name="ngModel">
+    </div>
+  
+    <div class="form-group">
+      <label for="quality">quality</label>
+      <input type="text" class="form-control" id="quality"
+           
+             [(ngModel)]="m_definition.quality" name="quality"
+             #name="ngModel">
+  </div>
+  
+  
+  
+  <div class="form-group">
+    <label for="likes">likes</label>
+    <input type="text" class="form-control" id="likes"
+         
+           [(ngModel)]="m_definition.likes" name="likes"
+           #name="ngModel">
+  </div>
+      
+     
+   
+  
+      <button type="submit" class="btn btn-success" [disabled]="!termForm.form.valid">Submit</button>
+      
+    
+  
+     
+  
+   
+    </form>

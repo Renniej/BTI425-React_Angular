@@ -1,1 +1,36 @@
-<p>list-term-non-english works!</p>
+
+
+
+<h3>List of Non-English Terms</h3>
+<p><a class="btn btn-info" routerLink="/create/termNonEnglish">Add Non-English Term</a></p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Term</th>
+      <th>Author</th>
+      <th>Number of Definitions</th>
+      <th>Field of Study</th>
+      <th>Language</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor='let term of m_NonEnglishTerms'>
+      <td>{{ term.wordNonEnglish }}</td>
+      <td>{{ term.authorName }}</td>
+      <td>{{ term.definitions.length }}</td>
+      <td>{{ term.fieldOfStudy }}</td>
+      <td>{{ getLanguageText(term.languageCode) }}</td>
+      <td>
+        <a routerLink="/details/termEnglish/{{term.termEnglish}}" class="btn btn-primary">EnglishTerm</a>&nbsp;
+        <a routerLink="/details/termNonEnglish/{{term._id}}" class="btn btn-primary">Detail</a>&nbsp;
+        <a routerLink="/edit/termNonEnglish/{{term._id}}" class="btn btn-warning">Edit</a>&nbsp;
+        <a (click)="deleteTerm(term._id)" class="btn btn-danger">Delete</a>&nbsp;
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+

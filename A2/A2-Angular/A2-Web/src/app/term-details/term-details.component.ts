@@ -12,7 +12,7 @@ import { definition } from '../schemas/definition';
 })
 export class TermDetailsComponent implements OnInit {
 
-  m_term : term;
+  m_term = {} as  term;
   m_definitions : definition[];
 
   m_param_id : string;
@@ -21,7 +21,7 @@ export class TermDetailsComponent implements OnInit {
   m_NotHelpfulClicked = false;
   
 
-  constructor(private apiService : TermApiService, private route:ActivatedRoute) { }
+  constructor(private apiService : TermApiService, private route:ActivatedRoute, private router:Router) { }
 
 
   ngOnInit(): void {
@@ -30,11 +30,29 @@ export class TermDetailsComponent implements OnInit {
     this.m_termType = this.route.snapshot.paramMap.get("termType");
     if (this.m_termType === "termEnglish")
       this.getPopulatedEnglishTerm();
+    else if (this.m_termType === "termNonEnglish")
+      this.getPopulatedNonEnglishTerm();
+  }
+
+
+  
+  deleteTerm(termID : String): void{
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+
+    this.apiService.deleteEnglishTerm(termID).subscribe(() => ( this.router.navigate(['/termEnglish'])));
+
+   
+   ;
   }
 
  getPopulatedEnglishTerm() : void {
      this.apiService.getPopulatedEnglishTerm(this.m_param_id).subscribe(term => ( this.m_term = term, this.m_definitions = term.definitions, console.log(term)));
   }
+
+  getPopulatedNonEnglishTerm() : void {
+    this.apiService.getPopulatedNonEnglishTerm(this.m_param_id).subscribe(term => ( this.m_term = term, this.m_definitions = term.definitions, console.log(term)));
+ }
 
   onClickHelpful(){
 
@@ -53,6 +71,13 @@ export class TermDetailsComponent implements OnInit {
 
   }
 
+
+  onClickDefinitionLike(def : definition){
+    def.likes++;
+
+    this.apiService.updateDefinition(def).subscribe(()=>{});
+  }
+  
   onClickNotHelpful(){
 
 

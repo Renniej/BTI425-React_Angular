@@ -2,7 +2,7 @@
 
 
 <h3>List of English Terms</h3>
-<p><a class="btn btn-info" routerLink="/termEnglish/create">Add English Term</a></p>
+<p><a class="btn btn-info" routerLink="/create/termEnglish">Add English Term</a></p>
 
 <table class="table table-striped">
   <thead>
@@ -15,7 +15,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor='let term of m_englishTerms; let i = index'>
+    <tr *ngFor='let term of m_englishTerms | filter:searchText:"wordEnglish"'>
       <td>{{ term.wordEnglish }}</td>
       <td>{{ term.authorName }}</td>
       <td>{{ term.definitions.length }}</td>
@@ -23,7 +23,7 @@
       <td>
         <a routerLink="/details/termEnglish/{{term._id}}" class="btn btn-primary">Detail</a>&nbsp;
         <a routerLink="/edit/termEnglish/{{term._id}}" class="btn btn-warning">Edit</a>&nbsp;
-        <a routerLink="/users/delete/{{ term.wordEnglish }}" class="btn btn-danger">Delete</a>&nbsp;
+        <a (click)="deleteTerm(term._id)" class="btn btn-danger">Delete</a>&nbsp;
       </td>
     </tr>
   </tbody>

@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 
 var termOtherSchema = new Schema({
-  wordEnglish : {type : String, required : true}, 
+  wordEnglish : {type : String, required : false}, 
   wordNonEnglish : {type : String, required : true, unique: true},
   wordExpanded : {type : String, default : ''},
   languageCode : {type : String, required : true},

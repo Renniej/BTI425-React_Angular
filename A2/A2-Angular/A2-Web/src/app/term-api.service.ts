@@ -25,8 +25,6 @@ export class TermApiService {
 
 
   getEnglishTerm(id : String) : Observable<term>{
-
-   
       return this.http.get<term>(this.apiUrl+"termEnglish/" + id);
   }
   getPopulatedEnglishTerm(id : String) : Observable<term>{
@@ -34,20 +32,78 @@ export class TermApiService {
     return this.http.get<term>(this.apiUrl+"populated_termEnglish/" + id);
   }
 
+
+
+  createEnglishTerm(Term: term, def :definition){
+    return this.http.post<term>(this.apiUrl + "termEnglish", {termObj : Term, definitionObj : def});
+  }
+  
+  updateEnglishTerm(Term : term){
+    return  this.http.put<term>(this.apiUrl+ "termEnglish/" + Term._id, Term);
+  }
+
+  deleteEnglishTerm(TermID: String){
+    return  this.http.delete<term>(this.apiUrl+ "termEnglish/" + TermID);
+  }
+
+
   getNonEnglishTerm(id : String) : Observable<term>{
 
     //TODO : code error catcher s
       return this.http.get<term>(this.apiUrl+"termNonEnglish/" + id);
   }
 
+  getNonEnglishTerms() : Observable<term[]>{
+
+    //TODO : code error catcher s
+      return this.http.get<term[]>(this.apiUrl+"termNonEnglish");
+  }
+
+  getPopulatedNonEnglishTerm(id : String) : Observable<term>{
+    //TODO : code error catcher s
+   return this.http.get<term>(this.apiUrl+"populated_termNonEnglish/" + id);
+ }
+
+  updateNonEnglishTerm(Term : term){
+    return  this.http.put<term>(this.apiUrl+ "termNonEnglish/" + Term._id, Term);
+  }
+
+  createNonEnglishTerm(Term: term, def :definition){
+    return this.http.post<term>(this.apiUrl + "termNonEnglish", {termObj : Term, definitionObj : def});
+  }
+
+  deleteNonEnglishTerm(TermID: String){
+    return  this.http.delete<term>(this.apiUrl+ "termNonEnglish/" + TermID);
+  }
+
+  createDefinition(newDefinition : definition, termType : string, termID : string){
+
+      var url;
+
+      if (termType === "termEnglish"){
+        url = this.apiUrl + "eng_definition/" + termID;
+      }
+      else if (termType === "termNonEnglish"){
+        url = this.apiUrl + "noneng_definition/" + termID;
+      }
+
+      return this.http.post<definition>(url, newDefinition); 
+
+  }
+
   getDefinition(id : String): Observable<definition>{
     return this.http.get<definition>(this.apiUrl+"definition/" + id);
   }
 
-  updateEnglishTerm(Term : term){
-      return  this.http.put<term>(this.apiUrl+ "termEnglish/" + Term._id, Term);
+  getAllDefinitions(): Observable<definition[]>{
+    return this.http.get<definition[]>(this.apiUrl+"definition");
   }
 
+  updateDefinition(defin : definition){
+    return this.http.put(this.apiUrl+"definition/" + defin._id, defin);
+  }
+
+  
   modifyHelpYes(id : String, termType : string, increment : boolean) : Observable<void>{
 
     console.trace();
@@ -82,5 +138,7 @@ export class TermApiService {
 
     return this.http.get<void>(url);
 }
+
+
 
 }

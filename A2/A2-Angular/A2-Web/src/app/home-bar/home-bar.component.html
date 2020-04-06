@@ -4,13 +4,13 @@
      
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
       <a routerLink="/termEnglish" routerLinkActive="active">English Terms</a>
-      <a routerLink="/nonTermEnglish" routerLinkActive="active">Non-English Terms</a>
+      <a routerLink="/termNonEnglish" routerLinkActive="active">Non-English Terms</a>
       <a routerLink="/definitions" routerLinkActive="active">Definitions</a>
      
       <div class="search-container">
         <form action="/action_page.php">
-          <input type="text" placeholder="Search.." name="search">
-          <button type="submit">Submit</button>
+          <input type="text"[(ngModel)]="searchText"  placeholder="Search.." name="search">
+          <button type="submit" [disabled]="!searchButtonEnabled" (click)="onSearchSubmitClick()">Search</button>
         </form>
       </div>
     </div>

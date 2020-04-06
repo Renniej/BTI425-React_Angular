@@ -150,7 +150,7 @@ exports.updateDefinition = function(newDefinition) {
   console.log("updateDefinition called")
   console.log(newDefinition);
   return new Promise(function(resolve, reject) {
-    definition.findByIdAndUpdate(newDefinition._id, newDefinition, { new: true }, function(
+    definiton.findByIdAndUpdate(newDefinition._id, newDefinition, { new: true }, function(
       err,
       data
     ) {
@@ -246,6 +246,8 @@ exports.findNonEnglishTermsByWord = function(word) {
 
 
 exports.addNonEnglishTerm = function(newTerm) {
+
+  newTerm.dateRevised = Date.now();
   return new Promise(function(resolve, reject) {
     termOther.create(newTerm, function(err, data) {
       if (err) reject(err);
@@ -567,6 +569,11 @@ exports.addEnglishTerm = function(newTerm) {
 exports.updateEnglishTerm = function(newTerm) {
   console.log("update English Term called")
   console.log(newTerm);
+
+  if (newTerm.dateRevised){
+    newTerm.dateRevised = Date.now();
+  }
+
   return new Promise(function(resolve, reject) {
     termEnglish.findByIdAndUpdate(newTerm._id, newTerm, { new: true }, function(
       err,

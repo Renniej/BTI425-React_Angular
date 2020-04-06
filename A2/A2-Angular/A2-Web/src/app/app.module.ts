@@ -13,6 +13,12 @@ import { ListTermNonEnglishComponent } from './list-term-non-english/list-term-n
 import { ListDefinitionsComponent } from './list-definitions/list-definitions.component';
 import { TermDetailsComponent } from './term-details/term-details.component';
 import { TermEditComponent } from './term-edit/term-edit.component';
+import { TermEnglishCreateComponent } from './term-english-create/term-english-create.component';
+import { TermNonEnglishCreateComponent } from './term-non-english-create/term-non-english-create.component';
+import { FilterPipe } from './filter.pipe';
+import { HomepageComponent } from './homepage/homepage.component';
+import { DefinitionCreateComponent } from './definition-create/definition-create.component';
+import { DefinitionEditComponent } from './definition-edit/definition-edit.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +28,13 @@ import { TermEditComponent } from './term-edit/term-edit.component';
     ListTermNonEnglishComponent,
     ListDefinitionsComponent,
     TermDetailsComponent,
-    TermEditComponent
+    TermEditComponent,
+    TermEnglishCreateComponent,
+    TermNonEnglishCreateComponent,
+    FilterPipe,
+    HomepageComponent,
+    DefinitionCreateComponent,
+    DefinitionEditComponent
   ],
   imports: [
     BrowserModule,

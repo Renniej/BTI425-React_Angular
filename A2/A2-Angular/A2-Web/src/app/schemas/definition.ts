@@ -5,5 +5,6 @@ export interface definition{
     dataCreated: String,
     definition :String,
     quality :   Number, 
-    likes : Number
+    likes : number,
+    _id : string
 }

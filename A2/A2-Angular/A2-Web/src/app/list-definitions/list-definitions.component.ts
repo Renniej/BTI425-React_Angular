@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {TermApiService} from "../term-api.service";
+import { ActivatedRoute, Router } from '@angular/router';
+import {term} from "../schemas/englishTerm";
+import { definition } from '../schemas/definition';
 
 @Component({
   selector: 'app-list-definitions',
@@ -7,9 +11,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListDefinitionsComponent implements OnInit {
 
-  constructor() { }
+
+  m_definitions : definition[];
+
+  constructor(private apiService : TermApiService, private route:ActivatedRoute, private router:Router) { }
 
   ngOnInit(): void {
+    this.getAllDefinitions();
   }
 
+
+  
+  onClickDefinitionLike(def : definition){
+    def.likes++;
+
+    this.apiService.updateDefinition(def).subscribe(()=>{});
+  }
+
+
+  getAllDefinitions() : void {
+    this.apiService.getAllDefinitions().subscribe(definitions => ( this.m_definitions = definitions));
+ }
 }

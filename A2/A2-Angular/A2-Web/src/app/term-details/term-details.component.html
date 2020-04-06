@@ -1,22 +1,25 @@
 
 
 
-<h3>{{m_term.wordEnglish}}</h3>
-
+<h3 *ngIf="m_termType == 'termEnglish'">{{m_term.wordEnglish}}</h3>
+<h3 *ngIf="m_termType == 'termNonEnglish'">{{m_term.wordNonEnglish}}</h3>
 
 
 <div class="text-center">
-  <h4>{{m_term.wordExpanded}}</h4>
-  <p>{{m_term.fieldOfStudy}} </p>
+
+
+    <h4>{{m_term.wordExpanded}}</h4>
+    <p>{{m_term.fieldOfStudy}} </p>
+
   
   <button class="btn btn-success" (click)="onClickHelpful()">Helpful[{{m_term.helpYes}}]</button>
   <button class="btn btn-danger"(click)="onClickNotHelpful()">Not Helpful[{{m_term.helpNo}}]</button>
 <ul class="list-group">
   <li class="list-group-item">
       <a class="btn btn-warning" routerLink="/edit/{{m_termType}}/{{m_term._id}}">Edit</a>
-      <a class="btn btn-danger" routerLink="/termEnglish/edit/dsfds">Delete</a>
+      <a class="btn btn-danger" (click)="deleteTerm(m_term._id)">Delete</a>
   </li>
-
+  <li *ngIf="m_termType == 'termNonEnglish'" class="list-group-item"> <a routerLink="/details/termEnglish/{{m_term.termEnglish}}" class="btn btn-primary">EnglishTerm</a> </li>
 
   <li class="list-group-item">Author : {{m_term.authorName}}</li>
   <li class="list-group-item">Language Code : {{m_term.languageCode}}</li>
@@ -33,7 +36,7 @@
   
 
 </div>
-<p><a class="btn btn-info" routerLink="/termEnglish/create">Add Definition</a></p>
+<p><a class="btn btn-info" routerLink="/create/definition/{{m_termType}}/{{m_term._id}}">Add Definition</a></p>
 
 
 
@@ -56,8 +59,8 @@
       <td>{{ def.likes }}</td>
       <td>{{ def.dataCreated }}</td>
       <td>
-        <a class="btn btn-success">Like![{{def.likes}}]</a>&nbsp;
-        <a routerLink="/users/edit/{{ def.wordEnglish }}" class="btn btn-warning">Edit</a>&nbsp;
+        <a class="btn btn-success" (click)="onClickDefinitionLike(def)">Like![{{def.likes}}]</a>&nbsp;
+        <a routerLink="/edit/definition/{{def._id}}" class="btn btn-warning">Edit</a>&nbsp;
         <a routerLink="/users/delete/{{ def.wordEnglish }}" class="btn btn-danger">Delete</a>&nbsp;
       </td>
     </tr>

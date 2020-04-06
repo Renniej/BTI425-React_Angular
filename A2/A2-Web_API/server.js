@@ -48,7 +48,7 @@ app.get("/api/definition", function(req, res) {
     })
     .catch(function(err) {
       res.status(500); //Api error ):
-      res.send("API ERROR : " + err);
+      res.json({ message :err});
     });
 });
 
@@ -60,7 +60,7 @@ app.get("/api/definition/:id", function(req, res) {
       res.json(data);
     })
     .catch(function(err) {
-      res.status(404).send("ERROR : " + err);
+      res.status(404).res.json({ message :err});
     });
 });
 
@@ -77,7 +77,24 @@ app.post("/api/eng_definition/:id", function(req, res) {
     })
     .catch(function(err) {
       res.status(500);
-      res.send("Error: " + err);
+      res.res.json({ message :err});
+    });
+});
+
+
+app.post("/api/noneng_definition/:id", function(req, res) {
+
+
+  console.log(req.body)
+  data_services
+    .addNonEngDefinition(req.body,req.params.id)
+    .then(function(data) {
+      res.status(200);
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.status(500);
+      res.res.json({ message :err});
     });
 });
 
@@ -87,9 +104,10 @@ app.put("/api/definition/:id", (req, res) => {
     .then(function(data) {
       res.json(data);
     })
-    .catch(function() {
+    .catch(function(err) {
       res.status(404);
-      res.json({ message: "Resource not found" });
+      console.log(err)
+      res.json({ message :err});
     });
 });
 
@@ -97,11 +115,11 @@ app.delete("/api/definition/:id", (req, res) => {
   data_services
     .removeDefinition(req.params.id)
     .then(function() {
-      res.send("req.params.id Deleted");
+      res.json({message : req.params.id + " Deleted"});
     })
-    .catch(function() {
+    .catch(function(err) {
       res.status(404);
-      res.json({ message: "Resource not found" });
+      res.json({ message :err});
     });
 });
 
@@ -125,7 +143,7 @@ app.get("/api/termEnglish", function(req, res) {
     })
     .catch(function(err) {
       res.status(500); //Api error ):
-      res.send("API ERROR : " + err);
+      res.json({ message :err});
     });
 });
 
@@ -135,15 +153,30 @@ app.post("/api/termEnglish", function(req, res) {
 
 
   console.log(req.body)
+
+
+
+ 
   data_services
-    .addEnglishTerm(req.body)
-    .then(function(data) {
-      res.status(200);
-      res.json(data);
+    .addEnglishTerm(req.body.termObj)
+    .then(function(term) {
+     
+
+      data_services.addEngDefinition(req.body.definitionObj, term._id).then(function(data){
+        res.status(200);
+        console.log(data);
+        res.json(data);
+      }).catch(function(err){
+        res.status(500);
+        res.json({ message :err});
+      })
+
+
+
     })
     .catch(function(err) {
       res.status(500);
-      res.send("Error: " + err);
+      res.json({ message :err});
     });
 });
 
@@ -156,7 +189,7 @@ app.get("/api/termEnglish/:id", function(req, res) {
       res.json(data);
     })
     .catch(function(err) {
-      res.status(404).send("ERROR : " + err);
+      res.status(404).json({ message :err});
     });
 });
 
@@ -169,7 +202,7 @@ app.get("/api/populated_termEnglish/:id", function(req, res) {
       res.json(data);
     })
     .catch(function(err) {
-      res.status(404).send("ERROR : " + err);
+      res.status(404).json({ message :err});
     });
 });
 
@@ -183,7 +216,7 @@ app.get("/api/termEnglish/findWord/:word", function(req, res) {
       res.json(data);
     })
     .catch(function(err) {
-      res.status(404).send("ERROR : " + err);
+      res.status(404).json({ message :err});
     });
 });
 
@@ -206,7 +239,7 @@ app.delete("/api/termEnglish/:id", (req, res) => {
   data_services
     .removeEnglishTerm(req.params.id)
     .then(function() {
-      res.send("req.params.id Deleted");
+      res.json({ message : req.params.id + "Deleted"});
     })
     .catch(function() {
       res.status(404);
@@ -221,18 +254,18 @@ app.get("/api/termEnglish/helpYes/:id/:option", (req,res)=>{
       data_services.modifyHelpEnglish(req.params.id, true,true).then(function(data){
         res.send("Incremented :)")
       }).catch(function(err){
-          res.send("Error : " + err);
+          res.json({ message :err});
       });
     }
     else if (req.params.option.toLowerCase() === "decrement"){
       data_services.modifyHelpEnglish(req.params.id, false,true).then(function(data){
-        res.send("decremented :)");
+        res.json({ message : "decremented :)"});
       }).catch(function(err){
-        res.send("Error : " + err);
+        res.json({ message :err});
       });
     }
     else {
-      res.send("Wrong option")
+      res.status(404).json({message : "invalid option"});
     }
 
 })
@@ -242,13 +275,179 @@ app.get("/api/termEnglish/helpNo/:id/:option", (req,res)=>{
 
   if (req.params.option.toLowerCase() === "increment"){
     data_services.modifyHelpEnglish(req.params.id, true,false).then(function(data){
+        res.json({message : "helpNo Incremented :)"})
+    }).catch(function(err){
+        res.json({message : err});
+    });
+  }
+  else if (req.params.option.toLowerCase() === "decrement"){
+    data_services.modifyHelpEnglish(req.params.id, false,false).then(function(data){
+      res.json({message : "helpNo decremented"})
+    }).catch(function(err){
+      res.status(500).json({message :  + err})
+    });
+  }
+  else{
+    res.status(404).json({message:"Wrong option"});
+  }
+
+})
+
+
+app.get("/api/termNonEnglish", function(req, res) {
+  //get all car documents
+
+  data_services
+    .findNonEnglishTermsById()
+    .then(function(data) {
+      var status;
+
+      if (data.length) {
+        status = 200; //Data didn't return as an empty query
+      } else {
+        status = 404; //Data returned is empty a.k.a data matching query was not found
+      }
+
+      res.status(status); //Sucessful response
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.status(500); //Api error ):
+      res.json({message :  err});
+    });
+});
+
+app.get("/api/termNonEnglish/:id", function(req, res) {
+  //get single car documents
+
+  data_services
+    .findNonEnglishTermsById(req.params.id)
+    .then(function(data) {
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.status(404).json({message: err});
+    });
+});
+
+
+app.get("/api/populated_termNonEnglish/:id", function(req, res) {
+  //get single car documents
+
+  data_services
+    .findPopulatedNonEnglishTermsById(req.params.id)
+    .then(function(data) {
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.status(404).json({message: err});
+    });
+});
+
+app.get("/api/termNonEnglish/findWord/:word", function(req, res) {
+  //get single car documents
+
+  data_services
+    .findNonEnglishTermsByWord(req.params.word)
+    .then(function(data) {
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.status(404).send("ERROR : " + err);
+    });
+});
+
+app.put("/api/termNonEnglish/:id", (req, res) => {
+  data_services
+    .updateNonEnglishTerm(req.body)
+    .then(function(data) {
+      res.json(data);
+    })
+    .catch(function() {
+      res.status(404);
+      res.json({ message: "Resource not found" });
+    });
+});
+
+app.post("/api/termNonEnglish", function(req, res) {
+
+
+  console.log(req.body)
+
+
+
+ 
+  data_services
+    .addNonEnglishTerm(req.body.termObj)
+    .then(function(term) {
+     
+
+      data_services.addNonEngDefinition(req.body.definitionObj, term._id).then(function(data){
+        res.status(200);
+        console.log(data);
+        res.json(data);
+      }).catch(function(err){
+        res.status(500);
+        res.send("Error: " + err);
+      })
+
+
+
+    })
+    .catch(function(err) {
+      res.status(500);
+      res.send("Error: " + err);
+    });
+});
+
+app.delete("/api/termNonEnglish/:id", (req, res) => {
+  data_services
+    .removeNonEnglishTerm(req.params.id)
+    .then(function() {
+      res.json({ message : req.params.id + "Deleted"});
+    })
+    .catch(function() {
+      res.status(404);
+      res.json({ message: "Resource not found" });
+    });
+});
+
+
+
+app.get("/api/termNonEnglish/helpYes/:id/:option", (req,res)=>{
+
+  if (req.params.option.toLowerCase() === "increment"){
+    data_services.modifyHelpNonEnglish(req.params.id, true,true).then(function(data){
+      res.send("Incremented :)")
+    }).catch(function(err){
+        res.send("Error : " + err);
+    });
+  }
+  else if (req.params.option.toLowerCase() === "decrement"){
+    data_services.modifyHelpNonEnglish(req.params.id, false,true).then(function(data){
+      res.send("decremented :)");
+    }).catch(function(err){
+      res.send("Error : " + err);
+    });
+  }
+  else {
+    res.send("Wrong option")
+  }
+
+})
+
+
+app.get("/api/termNonEnglish/helpNo/:id/:option", (req,res)=>{
+
+  if (req.params.option.toLowerCase() === "increment"){
+    data_services.modifyHelpNonEnglish(req.params.id, true,false).then(function(data){
         res.send("helpNo Incremented :)")
     }).catch(function(err){
         res.send("Error : " + err);
     });
   }
   else if (req.params.option.toLowerCase() === "decrement"){
-    data_services.modifyHelpEnglish(req.params.id, false,false).then(function(data){
+    data_services.modifyHelpNonEnglish(req.params.id, false,false).then(function(data){
       res.send("helpNo decremented")
     }).catch(function(err){
       res.send("Error : " + err)
@@ -259,6 +458,13 @@ app.get("/api/termEnglish/helpNo/:id/:option", (req,res)=>{
   }
 
 })
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,12 @@
+- HTPP submit failures for everything CRUD
+	- Redirec to something went wrong page ):
+
+
+- Do Form Validation for everything
+
+
+
+-delete definition
+
+
+

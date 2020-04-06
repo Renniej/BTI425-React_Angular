@@ -11,7 +11,7 @@ import languageCodes from '../languageCodes/LanguageCodes.json'
 })
 export class TermEditComponent implements OnInit {
 
-  m_term : term;
+  m_term = {} as term;
   m_param_id : string;
   m_termType : string;
   m_languageCodes = languageCodes;
@@ -24,6 +24,8 @@ export class TermEditComponent implements OnInit {
     this.m_termType = this.route.snapshot.paramMap.get("termType");
     if (this.m_termType === "termEnglish")
       this.getEnglishTerm();
+    else if(this.m_termType === "termNonEnglish")
+      this.getNonEnglishTerm();
   }
 
   getEnglishTerm() : void {
@@ -32,10 +34,18 @@ export class TermEditComponent implements OnInit {
  }
 
 
+ getNonEnglishTerm() : void {
+  this.apiService.getNonEnglishTerm(this.m_param_id).subscribe(term => ( this.m_term = term, console.log(term)));
+  console.log(this.m_languageCodes);
+}
+
   onSubmit(){
-    this.m_term.dateRevised = Date.now().toString();
-    
-    this.apiService.updateEnglishTerm(this.m_term).subscribe(()=>{  this.router.navigate( ["/details",this.m_termType, this.m_term._id])});
+    //this.m_term.dateRevised = Date.now().toString();
+    if (this.m_termType === "termEnglish")
+      this.apiService.updateEnglishTerm(this.m_term).subscribe(()=>{  this.router.navigate( ["/details",this.m_termType, this.m_term._id])});
+    else if(this.m_termType === "termNonEnglish"){
+      this.apiService.updateNonEnglishTerm(this.m_term).subscribe(()=>{  this.router.navigate( ["/details",this.m_termType, this.m_term._id])});
+    }
   }
 
 }
