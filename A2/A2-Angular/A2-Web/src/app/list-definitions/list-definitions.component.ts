@@ -32,4 +32,9 @@ export class ListDefinitionsComponent implements OnInit {
   getAllDefinitions() : void {
     this.apiService.getAllDefinitions().subscribe(definitions => ( this.m_definitions = definitions));
  }
+
+ onClickDelete(id : string){
+  this.apiService.deleteDefintion(id).subscribe(() => { this.router.navigate(['/definitions'])});
+ }
+
 }

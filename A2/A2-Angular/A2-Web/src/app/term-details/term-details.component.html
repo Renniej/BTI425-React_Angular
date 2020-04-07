@@ -61,7 +61,7 @@
       <td>
         <a class="btn btn-success" (click)="onClickDefinitionLike(def)">Like![{{def.likes}}]</a>&nbsp;
         <a routerLink="/edit/definition/{{def._id}}" class="btn btn-warning">Edit</a>&nbsp;
-        <a routerLink="/users/delete/{{ def.wordEnglish }}" class="btn btn-danger">Delete</a>&nbsp;
+        <a (click)="onClickDefDelete(def._id)" class="btn btn-danger">Delete</a>&nbsp;
       </td>
     </tr>
   </tbody>

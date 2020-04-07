@@ -10,6 +10,9 @@ app.use(cors());
 
 var HTTP_PORT = process.env.PORT || 8080; // http://localhost:8080/
 
+
+
+
 function onHttpStart() {
   data_services
     .initializeDBConnection()
@@ -60,7 +63,7 @@ app.get("/api/definition/:id", function(req, res) {
       res.json(data);
     })
     .catch(function(err) {
-      res.status(404).res.json({ message :err});
+      res.status(404).json({ message :err});
     });
 });
 
@@ -77,7 +80,7 @@ app.post("/api/eng_definition/:id", function(req, res) {
     })
     .catch(function(err) {
       res.status(500);
-      res.res.json({ message :err});
+      res.json({ message :err});
     });
 });
 
@@ -378,11 +381,11 @@ app.post("/api/termNonEnglish", function(req, res) {
 
  
   data_services
-    .addNonEnglishTerm(req.body.termObj)
-    .then(function(term) {
+    .addNonEnglishTerm(req.body.termObj).then(function(term) {
      
 
       data_services.addNonEngDefinition(req.body.definitionObj, term._id).then(function(data){
+
         res.status(200);
         console.log(data);
         res.json(data);

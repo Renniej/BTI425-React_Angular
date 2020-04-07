@@ -35,7 +35,10 @@ export class TermApiService {
 
 
   createEnglishTerm(Term: term, def :definition){
-    return this.http.post<term>(this.apiUrl + "termEnglish", {termObj : Term, definitionObj : def});
+
+    var data = {termObj : Term, definitionObj : def};
+    console.log(data)
+    return this.http.post<term>(this.apiUrl + "termEnglish",data );
   }
   
   updateEnglishTerm(Term : term){
@@ -101,6 +104,10 @@ export class TermApiService {
 
   updateDefinition(defin : definition){
     return this.http.put(this.apiUrl+"definition/" + defin._id, defin);
+  }
+
+  deleteDefintion(id : String){
+    return this.http.delete(this.apiUrl+"definition/" + id);
   }
 
   

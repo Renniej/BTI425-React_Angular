@@ -1,6 +1,8 @@
 //Data-services js is used for interacting with mongodb atlas database
 const mongoose = require("mongoose");
 
+
+
 var definitionSchema = require("./msc-definiton")
 var termEnglishSchema = require("./msc-termEnglish")
 var termOtherSchema = require("./msc-termOther")
@@ -8,6 +10,52 @@ var termOtherSchema = require("./msc-termOther")
 var exports = (module.exports = {});
 var Schema = mongoose.Schema;
 
+
+
+
+
+
+
+
+
+definitionSchema.post('deleteOne', function(next) {
+  
+  var defin = this.getFilter()["_id"];
+  console.log("ID : " + defin._id);
+  termEnglish.updateMany(
+    {definitions: {$in: [defin._id]} }, 
+    {$pull: {definitions: defin._id}}, (function(err,numberAffected){
+
+      
+      console.log("Number Affected : " + JSON.stringify(numberAffected));
+        if (err){
+          console.log(err)
+        }
+       
+    }) 
+ )
+
+
+ termNonEnglish.updateMany(
+  {definitions: {$in: [defin._id]} }, 
+  {$pull: {definitions: defin._id}}, (function(err,numberAffected){
+
+    
+    console.log("Number Affected : " + JSON.stringify(numberAffected));
+      if (err){
+        console.log(err)
+      }
+     
+  }) 
+)
+
+});
+
+var termEnglish = mongoose.model(
+  "TermEnglish",
+  termEnglishSchema,
+  "TermEnglish"
+); // collection name
 
 var definiton = mongoose.model(
   "Definition",
@@ -17,6 +65,7 @@ var definiton = mongoose.model(
   ,
   "Definition"
 ); 
+
 
 
 var termEnglish = mongoose.model(
@@ -32,6 +81,19 @@ var termOther = mongoose.model(
   termOtherSchema,
   "TermNonEnglish"
 ); // collection name
+
+
+
+definitionSchema.pre('remove', function(next){
+  console.log("CALLED PRE REMOVE")
+  this.model('TermEnglish').update(
+      {_id: {$in: this._id}}, 
+      {$pull: {groups: this._id}}, 
+      {multi: true},
+      next
+  );
+});
+
 
 exports.initializeDBConnection = function() {
   return new Promise(function(resolve, reject) {
@@ -163,9 +225,22 @@ exports.updateDefinition = function(newDefinition) {
 
 exports.removeDefinition = function(id) {
   return new Promise(function(resolve, reject) {
-    definiton.findByIdAndDelete(id, function(err) {
+
+    definiton.deleteOne({_id: id}, (err)=> {
+
+
+
+
+
+
+
       if (err) reject(err);
-      else resolve();
+      else {
+
+          
+        resolve();
+
+      }
     });
   });
 };
@@ -696,6 +771,8 @@ exports.modifyHelpNonEnglish = function(id, crement, type){
 
 
 }
+
+
 
 
 

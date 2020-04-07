@@ -21,7 +21,12 @@ export class TermDetailsComponent implements OnInit {
   m_NotHelpfulClicked = false;
   
 
-  constructor(private apiService : TermApiService, private route:ActivatedRoute, private router:Router) { }
+  constructor(private apiService : TermApiService, private route:ActivatedRoute, private router:Router) { 
+
+
+    
+
+  }
 
 
   ngOnInit(): void {
@@ -95,6 +100,10 @@ export class TermDetailsComponent implements OnInit {
     
     
   }
-  
+
+  onClickDefDelete(id : string){
+    this.apiService.deleteDefintion(id).subscribe(() => { this.router.navigate(['details','termEnglish', this.m_term._id])});
+    this.ngOnInit();
+   }
   
 }
