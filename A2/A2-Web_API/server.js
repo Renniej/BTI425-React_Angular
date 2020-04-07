@@ -38,15 +38,7 @@ app.get("/api/definition", function(req, res) {
   data_services
     .findDefinitionById()
     .then(function(data) {
-      var status;
-
-      if (data.length) {
-        status = 200; //Data didn't return as an empty query
-      } else {
-        status = 404; //Data returned is empty a.k.a data matching query was not found
-      }
-
-      res.status(status); //Sucessful response
+      
       res.json(data);
     })
     .catch(function(err) {
@@ -121,6 +113,7 @@ app.delete("/api/definition/:id", (req, res) => {
       res.json({message : req.params.id + " Deleted"});
     })
     .catch(function(err) {
+      console.log(err);
       res.status(404);
       res.json({ message :err});
     });
@@ -133,15 +126,7 @@ app.get("/api/termEnglish", function(req, res) {
   data_services
     .findEnglishTermsById()
     .then(function(data) {
-      var status;
-
-      if (data.length) {
-        status = 200; //Data didn't return as an empty query
-      } else {
-        status = 404; //Data returned is empty a.k.a data matching query was not found
-      }
-
-      res.status(status); //Sucessful response
+      
       res.json(data);
     })
     .catch(function(err) {
@@ -303,15 +288,11 @@ app.get("/api/termNonEnglish", function(req, res) {
   data_services
     .findNonEnglishTermsById()
     .then(function(data) {
-      var status;
+    
 
-      if (data.length) {
-        status = 200; //Data didn't return as an empty query
-      } else {
-        status = 404; //Data returned is empty a.k.a data matching query was not found
-      }
+     
 
-      res.status(status); //Sucessful response
+      
       res.json(data);
     })
     .catch(function(err) {

@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import {HttpClientModule} from '@angular/common/http'
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +19,9 @@ import { FilterPipe } from './filter.pipe';
 import { HomepageComponent } from './homepage/homepage.component';
 import { DefinitionCreateComponent } from './definition-create/definition-create.component';
 import { DefinitionEditComponent } from './definition-edit/definition-edit.component';
+import { HtppInterceptorService } from './htpp-interceptor.service';
+import { NotFound404Component } from './not-found404/not-found404.component';
+import { HttpErrorComponent } from './http-error/http-error.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,9 @@ import { DefinitionEditComponent } from './definition-edit/definition-edit.compo
     FilterPipe,
     HomepageComponent,
     DefinitionCreateComponent,
-    DefinitionEditComponent
+    DefinitionEditComponent,
+    NotFound404Component,
+    HttpErrorComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +47,13 @@ import { DefinitionEditComponent } from './definition-edit/definition-edit.compo
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide:HTTP_INTERCEPTORS,
+      useClass : HtppInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

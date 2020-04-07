@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+
 
 import {term} from './schemas/englishTerm';
 import {nonEnglishTerm} from './schemas/nonEnglishTerm'
@@ -17,6 +18,7 @@ export class TermApiService {
   constructor(private http: HttpClient) { }
 
 
+ 
   getEnglishTerms() : Observable<term[]>{
 
     //TODO : code error catcher s
@@ -113,8 +115,7 @@ export class TermApiService {
   
   modifyHelpYes(id : String, termType : string, increment : boolean) : Observable<void>{
 
-    console.trace();
-    console.log(id,termType,increment)
+    
     let url ='';
 
       if (increment === true){
@@ -132,8 +133,7 @@ export class TermApiService {
   
   modifyHelpNo(id : String, termType : string, increment : boolean) : Observable<void>{
   
-    console.trace();
-    console.log(id,termType,increment)
+  
     let url ='';
 
     if (increment === true){

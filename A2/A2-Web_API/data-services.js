@@ -36,7 +36,7 @@ definitionSchema.post('deleteOne', function(next) {
  )
 
 
- termNonEnglish.updateMany(
+ termOther.updateMany(
   {definitions: {$in: [defin._id]} }, 
   {$pull: {definitions: defin._id}}, (function(err,numberAffected){
 

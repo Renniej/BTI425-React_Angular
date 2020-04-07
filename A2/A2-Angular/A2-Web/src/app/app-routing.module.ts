@@ -10,6 +10,8 @@ import { TermNonEnglishCreateComponent } from './term-non-english-create/term-no
 import { HomepageComponent } from './homepage/homepage.component';
 import { DefinitionCreateComponent } from './definition-create/definition-create.component';
 import { DefinitionEditComponent } from './definition-edit/definition-edit.component';
+import { NotFound404Component } from './not-found404/not-found404.component';
+import { HttpErrorComponent } from './http-error/http-error.component';
 
 
 
@@ -26,7 +28,9 @@ const routes: Routes = [
   {path : 'edit/:termType/:id', component : TermEditComponent},
 
   {path : 'create/definition/:termType', component :DefinitionCreateComponent},
-  {path : 'create/definition/:termType/:id', component :DefinitionCreateComponent}
+  {path : 'create/definition/:termType/:id', component :DefinitionCreateComponent},
+  {path : 'error', component :HttpErrorComponent },
+  {path : '**', component : NotFound404Component}
 
 
   
